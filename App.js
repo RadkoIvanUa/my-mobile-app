@@ -19,8 +19,8 @@ export default function App() {
         source={require("./src/img/PhotoBG.jpg")}
         style={{ height: "100%" }}
       >
-        {/* <RegistrationScreen /> */}
-        <LoginScreen />
+        <RegistrationScreen />
+        {/* <LoginScreen /> */}
       </ImageBackground>
     </View>
   );
