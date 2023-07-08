@@ -1,4 +1,4 @@
-import { StyleSheet, View, ImageBackground, Platform } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import { useFonts } from "expo-font";
 import RegistrationScreen from "./src/Screens/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "./src/Screens/LoginScreen/LoginScreen";
@@ -19,6 +19,7 @@ export default function App() {
         source={require("./src/img/PhotoBG.jpg")}
         style={{ height: "100%" }}
       >
+        <View style={{ flexGrow: 1 }}></View>
         <RegistrationScreen />
         {/* <LoginScreen /> */}
       </ImageBackground>
