@@ -78,7 +78,7 @@ export default function LoginScreen() {
           </Pressable>
           <Pressable>
             <Text style={styles.bottomText}>
-              Немає акаунту?
+              {`Немає акаунту? `}
               <Text style={styles.bottomTextLastWord}>Зареєструватися</Text>
             </Text>
           </Pressable>

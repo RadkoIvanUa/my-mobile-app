@@ -12,7 +12,7 @@ import UploadingPhotoIcon from "../../img/icons/IconsComponents/UploadingPhotoIc
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import { btn } from "../../default-styles";
 import { useState } from "react";
-import DeleteBascket from "../../img/icons/IconsComponents/deleteBascket";
+import DeleteBascket from "../../img/icons/IconsComponents/DeleteBascket";
 
 export default function CreatePostsScreen() {
   const [isBtnDisbled, setIsBtnDisabled] = useState(true);
@@ -25,9 +25,6 @@ export default function CreatePostsScreen() {
     } else {
       setIsBtnDisabled(false);
     }
-
-    console.log(photoName.length);
-    console.log(isBtnDisbled);
   };
 
   return (
