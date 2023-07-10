@@ -2,6 +2,8 @@ import { StyleSheet, View, ImageBackground } from "react-native";
 import { useFonts } from "expo-font";
 import RegistrationScreen from "./src/Screens/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "./src/Screens/LoginScreen/LoginScreen";
+import CreatePostsScreen from "./src/Screens/CreatePostsScreen/CreatePostsScreen";
+import { StyledContainer } from "./src/default-styles";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,22 +16,16 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
+    <View>
+      {/* <ImageBackground
         source={require("./src/img/PhotoBG.jpg")}
         style={{ height: "100%" }}
       >
         <View style={{ flexGrow: 1 }}></View>
         <RegistrationScreen />
-        {/* <LoginScreen /> */}
-      </ImageBackground>
+        <LoginScreen />
+      </ImageBackground> */}
+      <CreatePostsScreen />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    fontFamily: "Roboto-Regular",
-  },
-});
