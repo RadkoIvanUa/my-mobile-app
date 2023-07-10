@@ -7,10 +7,10 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Button,
 } from "react-native";
 
 import { styles } from "./StyledRegistrationScreen";
+import { btn } from "../../default-styles";
 import { useState } from "react";
 
 export default function RegistrationScreen() {
@@ -97,8 +97,8 @@ export default function RegistrationScreen() {
               <Text style={styles.passwordText}>Показати</Text>
             </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={onRegistration}>
-            <Text style={styles.buttonText}>Зареєстуватися</Text>
+          <Pressable style={btn} onPress={onRegistration}>
+            <Text style={btn.text}>Зареєстуватися</Text>
           </Pressable>
           <Pressable>
             <Text style={styles.bottomText}>Вже є акаунт? Увійти</Text>

@@ -1,5 +1,4 @@
 import {
-  ImageBackground,
   Text,
   TextInput,
   View,
@@ -11,6 +10,7 @@ import {
 
 import { styles } from "../LoginScreen/StyledLoginScreen";
 import { useState } from "react";
+import { btn } from "../../default-styles";
 
 export default function LoginScreen() {
   const [emailFocusColor, setEmailFocusColor] = useState("#E8E8E8");
@@ -73,13 +73,12 @@ export default function LoginScreen() {
               <Text style={styles.passwordText}>Показати</Text>
             </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={onLogin}>
-            <Text style={styles.buttonText}>Увійти</Text>
+          <Pressable style={btn} onPress={onLogin}>
+            <Text style={btn.text}>Увійти</Text>
           </Pressable>
           <Pressable>
             <Text style={styles.bottomText}>
               Немає акаунту?
-              <Text> </Text>
               <Text style={styles.bottomTextLastWord}>Зареєструватися</Text>
             </Text>
           </Pressable>
