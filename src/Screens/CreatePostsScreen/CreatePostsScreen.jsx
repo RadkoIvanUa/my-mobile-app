@@ -67,17 +67,7 @@ export default function CreatePostsScreen() {
               onChangeText={setPhotoLocation}
               onChange={handleChange}
             ></TextInput>
-            <View
-              style={{
-                position: "absolute",
-                ...Platform.select({
-                  ios: {
-                    top: 13,
-                  },
-                  android: { top: 18 },
-                }),
-              }}
-            >
+            <View style={styles.locationIcon}>
               <LocationIcon />
             </View>
           </View>
@@ -120,7 +110,7 @@ export default function CreatePostsScreen() {
               Опублікувати
             </Text>
           </Pressable>
-          <View style={{ display: "flex", alignItems: "center" }}>
+          <View style={styles.deletePosTBtnFlex}>
             <View style={styles.deletePostBtn}>
               <DeleteBascket />
             </View>

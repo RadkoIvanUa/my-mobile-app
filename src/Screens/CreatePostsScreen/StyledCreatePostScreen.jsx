@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   screenHeader: {
@@ -54,6 +54,22 @@ export const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingTop: 16,
   },
+
+  locationIcon: {
+    position: "absolute",
+    ...Platform.select({
+      ios: {
+        top: 13,
+      },
+      android: { top: 18 },
+    }),
+  },
+
+  deletePosTBtnFlex: {
+    display: "flex",
+    alignItems: "center",
+  },
+
   deletePostBtn: {
     width: 70,
     height: 40,
