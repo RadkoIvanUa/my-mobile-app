@@ -29,16 +29,7 @@ export default function CreatePostsScreen() {
 
   return (
     <>
-      <View style={styles.screenHeader}>
-        <Pressable style={styles.screenHeaderArrowLeftIcon}>
-          <Image
-            source={require("../../img/icons/arrow-left.png")}
-            style={{ width: 24, height: 24 }}
-          />
-        </Pressable>
-        <Text style={styles.screenHeaderText}>Створити публікацію</Text>
-      </View>
-      <View style={StyledContainer}>
+      <View style={{ ...StyledContainer, paddingTop: 32 }}>
         <View style={styles.uploadPhoto}>
           <View style={styles.uploadPhotoContainer}>
             <UploadingPhotoIcon />

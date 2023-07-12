@@ -34,13 +34,12 @@ export default function CommentsScreen() {
         behavior={"position"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : -150}
       >
-        <View
-          style={{
-            ...StyledContainer,
-          }}
-        >
+        <View style={StyledContainer}>
           <View style={styles.commentedPhoto}></View>
-          <ScrollView style={{ height: windowHeight - 490 }}>
+          <ScrollView
+            style={{ height: windowHeight - 490 }}
+            showsVerticalScrollIndicator={false}
+          >
             <View style={styles.visitorComment}>
               <View style={styles.commentsUserPhoto}>
                 <Image

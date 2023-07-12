@@ -2,6 +2,7 @@ export const StyledContainer = {
   fontFamily: "Roboto-Regular",
   paddingLeft: 16,
   paddingRight: 16,
+  // backgroundColor: "white",
 };
 
 export const btn = {

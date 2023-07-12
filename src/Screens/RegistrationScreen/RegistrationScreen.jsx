@@ -7,13 +7,14 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ImageBackground,
 } from "react-native";
 
 import { styles } from "./StyledRegistrationScreen";
 import { btn } from "../../default-styles";
 import { useState } from "react";
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [loginFocusColor, setLoginFocusColor] = useState("#E8E8E8");
   const [emailFocusColor, setEmailFocusColor] = useState("#E8E8E8");
   const [passwordFocusColor, setPasswordFocusColor] = useState("#E8E8E8");
@@ -23,88 +24,100 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
 
   const onRegistration = () => {
-    const userRegistrationData = {
-      login: login,
+    navigation.navigate("Home", {
       email: email,
+      login: login,
       password: password,
-    };
-
-    return console.log("userRegistrationData :>> ", userRegistrationData);
+    });
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={"padding"} keyboardVerticalOffset={-140}>
-        <View style={styles.registrationContainer}>
-          <View style={styles.addPhotoSpace}>
-            <Image
-              style={styles.addPhotoSpaceIcon}
-              source={require("../../img/icons/add.png")}
-            />
-          </View>
-          <Text style={styles.text}>Реєстрація</Text>
-          <TextInput
-            placeholder="Логін"
-            style={{ ...styles.input, borderColor: loginFocusColor }}
-            placeholderTextColor="#BDBDBD"
-            onFocus={() => {
-              setLoginFocusColor("#FF6C00");
-            }}
-            onBlur={() => {
-              setLoginFocusColor("#E8E8E8");
-            }}
-            textContentType="username"
-            value={login}
-            onChangeText={setLogin}
-          />
-          <TextInput
-            placeholder="Адреса електронної пошти"
-            style={{ ...styles.input, borderColor: emailFocusColor }}
-            placeholderTextColor="#BDBDBD"
-            onFocus={() => {
-              setEmailFocusColor("#FF6C00");
-            }}
-            onBlur={() => {
-              setEmailFocusColor("#E8E8E8");
-            }}
-            textContentType="emailAddress"
-            value={email}
-            onChangeText={setEmail}
-          />
-
-          <View style={styles.passwordInputContainer}>
+    <ImageBackground
+      source={require("../../img/PhotoBG.jpg")}
+      style={{ height: "100%" }}
+    >
+      <View style={{ flexGrow: 1 }}></View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={"padding"}
+          keyboardVerticalOffset={-140}
+        >
+          <View style={styles.registrationContainer}>
+            <View style={styles.addPhotoSpace}>
+              <Image
+                style={styles.addPhotoSpaceIcon}
+                source={require("../../img/icons/add.png")}
+              />
+            </View>
+            <Text style={styles.text}>Реєстрація</Text>
             <TextInput
-              placeholder="Пароль"
-              style={{
-                ...styles.input,
-                marginBottom: 43,
-                borderColor: passwordFocusColor,
-              }}
+              placeholder="Логін"
+              style={{ ...styles.input, borderColor: loginFocusColor }}
               placeholderTextColor="#BDBDBD"
-              secureTextEntry={true}
               onFocus={() => {
-                setPasswordFocusColor("#FF6C00");
+                setLoginFocusColor("#FF6C00");
               }}
               onBlur={() => {
-                setPasswordFocusColor("#E8E8E8");
+                setLoginFocusColor("#E8E8E8");
               }}
-              textContentType="newPassword"
-              value={password}
-              onChangeText={setPassword}
-              maxLength={15}
+              textContentType="username"
+              value={login}
+              onChangeText={setLogin}
             />
-            <Pressable style={styles.showPasswordButton}>
-              <Text style={styles.passwordText}>Показати</Text>
+            <TextInput
+              placeholder="Адреса електронної пошти"
+              style={{ ...styles.input, borderColor: emailFocusColor }}
+              placeholderTextColor="#BDBDBD"
+              onFocus={() => {
+                setEmailFocusColor("#FF6C00");
+              }}
+              onBlur={() => {
+                setEmailFocusColor("#E8E8E8");
+              }}
+              textContentType="emailAddress"
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                placeholder="Пароль"
+                style={{
+                  ...styles.input,
+                  marginBottom: 43,
+                  borderColor: passwordFocusColor,
+                }}
+                placeholderTextColor="#BDBDBD"
+                secureTextEntry={true}
+                onFocus={() => {
+                  setPasswordFocusColor("#FF6C00");
+                }}
+                onBlur={() => {
+                  setPasswordFocusColor("#E8E8E8");
+                }}
+                textContentType="newPassword"
+                value={password}
+                onChangeText={setPassword}
+                maxLength={15}
+              />
+              <Pressable style={styles.showPasswordButton}>
+                <Text style={styles.passwordText}>Показати</Text>
+              </Pressable>
+            </View>
+            <Pressable style={btn} onPress={onRegistration}>
+              <Text style={btn.text}>Зареєстуватися</Text>
+            </Pressable>
+            <Pressable>
+              <Text
+                style={styles.bottomText}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Вже є акаунт? Увійти
+              </Text>
             </Pressable>
           </View>
-          <Pressable style={btn} onPress={onRegistration}>
-            <Text style={btn.text}>Зареєстуватися</Text>
-          </Pressable>
-          <Pressable>
-            <Text style={styles.bottomText}>Вже є акаунт? Увійти</Text>
-          </Pressable>
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 }

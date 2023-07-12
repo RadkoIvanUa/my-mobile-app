@@ -1,60 +1,39 @@
-import { StyleSheet, Platform } from "react-native";
+import { Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  profileWrapper: {
-    backgroundColor: "#fff",
-    width: "100%",
+  userInfo: {
     display: "flex",
+    flexDirection: "row",
     alignItems: "center",
-    paddingTop: 92,
-    // marginTop: "auto",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    marginTop: 150,
+    gap: 8,
+    marginBottom: 32,
   },
 
-  photoSpace: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
+  userPhotoThumb: {
+    width: 60,
+    height: 60,
     borderRadius: 16,
-    position: "absolute",
-    top: -60,
+    overflow: "hidden",
+    backgroundColor: "red",
+  },
+  userName: {
+    color: "#212121",
+    fontSize: 13,
+    fontWeight: 700,
+  },
+  userEmail: {
+    color: "#212121CC",
+    fontSize: 11,
   },
 
-  removeUserPhotoIcon: {
-    width: 25,
-    height: 25,
-    position: "absolute",
-    top: 75,
-    left: 100,
-  },
-
-  profileImg: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 16,
-  },
-
-  logOutIcon: {
-    position: "absolute",
-    top: 22,
-    right: 16,
+  profilePostList: {
+    height: "88%",
   },
 
   profilePostItem: { marginBottom: 32 },
 
   postPhoto: {
-    ...Platform.select({
-      ios: {
-        width: 380,
-      },
-
-      android: {
-        width: 360,
-      },
-    }),
-
     height: 240,
     borderWidth: 1,
     borderColor: "#E8E8E8",
@@ -77,12 +56,6 @@ export const styles = StyleSheet.create({
     gap: 6,
     alignItems: "center",
   },
-
-  postComents: {},
-
-  postLikes: {},
-
-  postLocation: {},
 
   locationText: {
     textDecorationLine: "underline",
