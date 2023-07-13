@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Button } from "react-native";
 import LogOutIcon from "./src/img/icons/IconsComponents/LogOutIcon";
+import PostsScreen from "./src/Screens/PostsScreen/PostsScreen";
 
 const MainStack = createStackNavigator();
 

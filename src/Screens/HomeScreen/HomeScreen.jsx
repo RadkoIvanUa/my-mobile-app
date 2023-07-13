@@ -10,25 +10,44 @@ import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
 import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost";
 import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
 import { Pressable } from "react-native";
-import { Text } from "react-native";
-import { styles } from "../CommentsScreen/StyledCommentsScreen";
+import NavigationIconWrapper from "../../components/NavigationIconWrapper";
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: () => {
           if (route.name === "Posts") {
             return <HomeNavigationIcon />;
           } else if (route.name === "CreatePost") {
-            return <NavigationAddPost fill={"#212121"} />;
+            return (
+              <NavigationIconWrapper>
+                <NavigationAddPost fill={"#fff"} />
+              </NavigationIconWrapper>
+            );
           } else if (route.name === "Profile") {
             return <ProfileNavigationIcon stroke={"#212121"} />;
           }
         },
         tabBarShowLabel: false,
+        tabBarStyle: {
+          alignItems: "center",
+          paddingLeft: 65,
+          paddingRight: 65,
+
+          paddingBottom: 34,
+          ...Platform.select({
+            ios: {
+              height: 83,
+              paddingTop: 10,
+            },
+            android: {
+              paddingTop: 30,
+            },
+          }),
+        },
       })}
     >
       <Tab.Screen
@@ -68,20 +87,9 @@ export default function HomeScreen() {
             lineHeight: 22,
             letterSpacing: -0.408,
           },
-          // Custom Header
-          // header: ({ navigation, route, options, back }) => {
-          //   return (
-          //     <View style={styles.screenHeader}>
-          //       <Pressable style={styles.screenHeaderArrowLeftIcon}>
-          //         <BackArrow onPress={navigation.goBack} />
-          //       </Pressable>
-          //       <Text style={styles.screenHeaderText}>Створити публікацію</Text>
-          //     </View>
-          //   );
-          // },
 
           headerLeft: () => (
-            <Pressable onPress={() => console.log("go back pressed")}>
+            <Pressable onPress={() => navigation.navigate("Posts")}>
               <BackArrow />
             </Pressable>
           ),
@@ -90,7 +98,7 @@ export default function HomeScreen() {
             left: 16,
           },
           tabBarStyle: {
-            // display: "none",
+            display: "none",
           },
         }}
       />
