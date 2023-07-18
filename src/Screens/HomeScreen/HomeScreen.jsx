@@ -18,9 +18,12 @@ export default function HomeScreen({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: () => {
+        tabBarIcon: ({ focused }) => {
           if (route.name === "Posts") {
-            return <HomeNavigationIcon />;
+            if (focused) {
+              return <HomeNavigationIcon stroke={"#FF6C00"} />;
+            }
+            return <HomeNavigationIcon stroke={"#212121"} />;
           } else if (route.name === "CreatePost") {
             return (
               <NavigationIconWrapper>
@@ -28,6 +31,9 @@ export default function HomeScreen({ navigation }) {
               </NavigationIconWrapper>
             );
           } else if (route.name === "Profile") {
+            if (focused) {
+              return <ProfileNavigationIcon stroke={"#FF6C00"} />;
+            }
             return <ProfileNavigationIcon stroke={"#212121"} />;
           }
         },

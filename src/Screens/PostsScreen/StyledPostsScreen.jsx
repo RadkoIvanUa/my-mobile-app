@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     height: 60,
     borderRadius: 16,
     overflow: "hidden",
-    backgroundColor: "red",
+    backgroundColor: "#F6F6F6",
   },
   userName: {
     color: "#212121",
