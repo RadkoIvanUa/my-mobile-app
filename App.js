@@ -15,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Button } from "react-native";
 import LogOutIcon from "./src/img/icons/IconsComponents/LogOutIcon";
 import PostsScreen from "./src/Screens/PostsScreen/PostsScreen";
+import { Text } from "react-native";
 
 const MainStack = createStackNavigator();
 
@@ -61,8 +62,8 @@ export default function App() {
         />
         {/* <CreatePostsScreen /> */}
         {/* <CommentsScreen /> */}
-        {/* <MapScreen /> */}
       </MainStack.Navigator>
     </NavigationContainer>
+    // <MapScreen />
   );
 }

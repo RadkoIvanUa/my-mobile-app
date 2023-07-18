@@ -16,9 +16,13 @@ import { btn } from "../../default-styles";
 export default function LoginScreen({ navigation }) {
   const [emailFocusColor, setEmailFocusColor] = useState("#E8E8E8");
   const [passwordFocusColor, setPasswordFocusColor] = useState("#E8E8E8");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordShowed, setIsPasswordShowed] = useState(true);
+
+  const handleShowPasswordPress = () => {
+    setIsPasswordShowed((show) => !show);
+  };
 
   const onLogin = () => {
     navigation.navigate("Home", { email: email, password: password });
@@ -61,7 +65,7 @@ export default function LoginScreen({ navigation }) {
                   borderColor: passwordFocusColor,
                 }}
                 placeholderTextColor="#BDBDBD"
-                secureTextEntry={true}
+                secureTextEntry={isPasswordShowed}
                 onFocus={() => {
                   setPasswordFocusColor("#FF6C00");
                 }}
@@ -74,7 +78,12 @@ export default function LoginScreen({ navigation }) {
                 maxLength={15}
               />
               <Pressable style={styles.showPasswordButton}>
-                <Text style={styles.passwordText}>Показати</Text>
+                <Text
+                  style={styles.passwordText}
+                  onPress={handleShowPasswordPress}
+                >
+                  {isPasswordShowed ? "Показати" : "Приховати"}
+                </Text>
               </Pressable>
             </View>
             <Pressable style={btn} onPress={onLogin}>

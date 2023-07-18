@@ -11,11 +11,8 @@ export const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
     backgroundColor: "#F6F6F6",
-
     marginBottom: 8,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    overflow: "hidden",
   },
 
   uploadPhotoBottomText: {
@@ -55,4 +52,20 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  //---------------------
+  camera: { flex: 1, width: "100%", height: "100%" },
+  photoView: {
+    flex: 1,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  flipContainer: {
+    flex: 0.1,
+    alignSelf: "flex-end",
+  },
+
+  button: { justifyContent: "center" },
 });
