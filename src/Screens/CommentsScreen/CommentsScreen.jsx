@@ -4,9 +4,7 @@ import {
   Pressable,
   Image,
   TextInput,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  Keyboard,
   Platform,
   Dimensions,
 } from "react-native";
@@ -19,17 +17,7 @@ import SendCommentButton from "../../img/icons/IconsComponents/SendCommentButton
 export default function CommentsScreen() {
   const windowHeight = Dimensions.get("window").height;
   return (
-    <View>
-      <View style={styles.screenHeader}>
-        <Pressable style={styles.screenHeaderArrowLeftIcon}>
-          <Image
-            source={require("../../img/icons/arrow-left.png")}
-            style={{ width: 24, height: 24 }}
-          />
-        </Pressable>
-        <Text style={styles.screenHeaderText}>Коментарі</Text>
-      </View>
-
+    <View style={{ marginTop: 32 }}>
       <KeyboardAvoidingView
         behavior={"position"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : -150}

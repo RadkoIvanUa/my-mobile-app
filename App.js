@@ -1,21 +1,14 @@
 import "react-native-gesture-handler";
-
 import { useFonts } from "expo-font";
 import RegistrationScreen from "./src/Screens/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "./src/Screens/LoginScreen/LoginScreen";
-import CreatePostsScreen from "./src/Screens/CreatePostsScreen/CreatePostsScreen";
-
 import CommentsScreen from "./src/Screens/CommentsScreen/CommentsScreen";
-import ProfileScreen from "./src/Screens/ProfileScreen/ProfileScreen";
 import HomeScreen from "./src/Screens/HomeScreen/HomeScreen";
 import MapScreen from "./src/Screens/MapScreen/MapScreen";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Button } from "react-native";
-import LogOutIcon from "./src/img/icons/IconsComponents/LogOutIcon";
-import PostsScreen from "./src/Screens/PostsScreen/PostsScreen";
-import { Text } from "react-native";
+import { Pressable } from "react-native";
+import BackArrow from "./src/img/icons/IconsComponents/BackArrow";
 
 const MainStack = createStackNavigator();
 
@@ -60,8 +53,64 @@ export default function App() {
             headerLeft: null,
           }}
         />
-        {/* <CreatePostsScreen /> */}
-        {/* <CommentsScreen /> */}
+        <MainStack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={({ navigation }) => ({
+            title: "Коментарі",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              color: "#212121",
+              textAlign: "center",
+              fontFamily: "Roboto-Bold",
+              fontSize: 17,
+              lineHeight: 22,
+              letterSpacing: -0.408,
+            },
+
+            headerLeft: () => (
+              <Pressable onPress={() => navigation.navigate("Home")}>
+                <BackArrow />
+              </Pressable>
+            ),
+
+            headerLeftContainerStyle: {
+              left: 16,
+            },
+            tabBarStyle: {
+              display: "none",
+            },
+          })}
+        />
+        <MainStack.Screen
+          name="Map"
+          component={MapScreen}
+          options={({ navigation }) => ({
+            title: "Карта",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              color: "#212121",
+              textAlign: "center",
+              fontFamily: "Roboto-Bold",
+              fontSize: 17,
+              lineHeight: 22,
+              letterSpacing: -0.408,
+            },
+
+            headerLeft: () => (
+              <Pressable onPress={() => navigation.navigate("Home")}>
+                <BackArrow />
+              </Pressable>
+            ),
+
+            headerLeftContainerStyle: {
+              left: 16,
+            },
+            tabBarStyle: {
+              display: "none",
+            },
+          })}
+        />
       </MainStack.Navigator>
     </NavigationContainer>
     // <MapScreen />

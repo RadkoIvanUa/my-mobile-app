@@ -1,29 +1,12 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Image,
-  TextInput,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Keyboard,
-  Platform,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { View, Text, Image, ScrollView, Pressable } from "react-native";
 
 import { styles } from "./StyledPostsScreen";
 import { StyledContainer } from "../../default-styles";
 import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
-import HomeNavigationIcon from "../../img/icons/IconsComponents/HomeNavigationIcon";
-import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
-import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ProfileScreen from "../ProfileScreen/ProfileScreen";
 
-export default function PostsScreen() {
+export default function PostsScreen({ navigation }) {
   return (
     <>
       <View style={{ ...StyledContainer, marginTop: 32 }}>
@@ -54,19 +37,25 @@ export default function PostsScreen() {
             <Text style={styles.photoName}>photoName</Text>
             <View style={styles.postInfoFlex}>
               <View style={styles.postLeftSideFlexItem}>
-                <View style={{ ...styles.postComents, ...styles.postInfo }}>
+                <Pressable
+                  style={{ ...styles.postComents, ...styles.postInfo }}
+                  onPress={() => navigation.navigate("Comments")}
+                >
                   <CommentsIcon />
                   <Text>14</Text>
-                </View>
+                </Pressable>
                 <View style={{ ...styles.postLikes, ...styles.postInfo }}>
                   <LikeIcons />
                   <Text>456</Text>
                 </View>
               </View>
-              <View style={{ ...styles.postLocation, ...styles.postInfo }}>
+              <Pressable
+                style={{ ...styles.postLocation, ...styles.postInfo }}
+                onPress={() => navigation.navigate("Map")}
+              >
                 <LocationIcon />
                 <Text style={styles.locationText}>Ukraine</Text>
-              </View>
+              </Pressable>
             </View>
           </View>
           <View style={styles.profilePostItem}>
@@ -79,38 +68,29 @@ export default function PostsScreen() {
             <Text style={styles.photoName}>photoName</Text>
             <View style={styles.postInfoFlex}>
               <View style={styles.postLeftSideFlexItem}>
-                <View style={{ ...styles.postComents, ...styles.postInfo }}>
+                <Pressable
+                  style={{ ...styles.postComents, ...styles.postInfo }}
+                  onPress={() => navigation.navigate("Comments")}
+                >
                   <CommentsIcon />
                   <Text>14</Text>
-                </View>
+                </Pressable>
                 <View style={{ ...styles.postLikes, ...styles.postInfo }}>
                   <LikeIcons />
                   <Text>456</Text>
                 </View>
               </View>
-              <View style={{ ...styles.postLocation, ...styles.postInfo }}>
+              <Pressable
+                style={{ ...styles.postLocation, ...styles.postInfo }}
+                onPress={() => navigation.navigate("Map")}
+              >
                 <LocationIcon />
                 <Text style={styles.locationText}>Ukraine</Text>
-              </View>
+              </Pressable>
             </View>
           </View>
         </ScrollView>
       </View>
-      {/* <View style={styles.profileNavigation}>
-        <View style={styles.profileNavigationWrapper}>
-          <Pressable style={styles.featcherIcon}>
-            <HomeNavigationIcon />
-          </Pressable>
-          <Pressable style={styles.featcherIcon}>
-            <View style={styles.ProfileNavigationIconWrapper}>
-              <NavigationAddPost fill={"#fff"} />
-            </View>
-          </Pressable>
-          <Pressable style={styles.featcherIcon}>
-            <ProfileNavigationIcon stroke={"#212121"} />
-          </Pressable>
-        </View>
-      </View> */}
     </>
   );
 }

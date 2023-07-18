@@ -17,7 +17,7 @@ import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import HomeNavigationIcon from "../../img/icons/IconsComponents/HomeNavigationIcon";
 import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
 import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost";
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   return (
     <ImageBackground
       source={require("../../img/PhotoBG.jpg")}
@@ -51,19 +51,25 @@ export default function ProfileScreen() {
               <Text style={styles.photoName}>photoName</Text>
               <View style={styles.postInfoFlex}>
                 <View style={styles.postLeftSideFlexItem}>
-                  <View style={{ ...styles.postComents, ...styles.postInfo }}>
+                  <Pressable
+                    style={{ ...styles.postComents, ...styles.postInfo }}
+                    onPress={() => navigation.navigate("Comments")}
+                  >
                     <CommentsIcon />
                     <Text>14</Text>
-                  </View>
+                  </Pressable>
                   <View style={{ ...styles.postLikes, ...styles.postInfo }}>
                     <LikeIcons />
                     <Text>456</Text>
                   </View>
                 </View>
-                <View style={{ ...styles.postLocation, ...styles.postInfo }}>
+                <Pressable
+                  style={{ ...styles.postLocation, ...styles.postInfo }}
+                  onPress={() => navigation.navigate("Map")}
+                >
                   <LocationIcon />
                   <Text style={styles.locationText}>Ukraine</Text>
-                </View>
+                </Pressable>
               </View>
             </View>
             <View style={styles.profilePostItem}>

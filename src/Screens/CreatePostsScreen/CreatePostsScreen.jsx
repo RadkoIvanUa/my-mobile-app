@@ -12,28 +12,19 @@ import { StyledContainer } from "../../default-styles";
 import UploadingPhotoIcon from "../../img/icons/IconsComponents/UploadingPhotoIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import { btn } from "../../default-styles";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import DeleteBascket from "../../img/icons/IconsComponents/DeleteBascket";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import ResetNewPhoto from "../../img/icons/IconsComponents/ResetNewPhoto";
 
-export default function CreatePostsScreen() {
+export default function CreatePostsScreen({ navigation }) {
   const [isBtnDisbled, setIsBtnDisabled] = useState(true);
   const [photoName, setPhotoName] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
   const [location, setLocation] = useState(null);
-
   const [newPhotoUri, setNewPhotoUri] = useState("");
-
-  const handleChange = () => {
-    if (photoName.length === 1 || photoLocation.length === 1) {
-      return setIsBtnDisabled(true);
-    } else {
-      setIsBtnDisabled(false);
-    }
-  };
 
   // Camera
   const [hasPermission, setHasPermission] = useState(null);
@@ -50,7 +41,6 @@ export default function CreatePostsScreen() {
   }, []);
 
   // Location
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -61,14 +51,25 @@ export default function CreatePostsScreen() {
   }, []);
 
   const handleCreatePostPress = async () => {
-    let location = await Location.getCurrentPositionAsync({});
+    let getLocation = await Location.getCurrentPositionAsync({});
     const coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: getLocation.coords.latitude,
+      longitude: getLocation.coords.longitude,
     };
+
     setLocation(coords);
+
+    navigation.navigate("Posts", {
+      photoName: photoName,
+      photoLocation: photoLocation,
+      location: location,
+    });
+
+    setPhotoName("");
+    setPhotoLocation("");
+    setNewPhotoUri("");
+    setIsBtnDisabled(true);
   };
-  //-------------
 
   return (
     <View style={{ ...StyledContainer, paddingTop: 32 }}>
@@ -89,34 +90,60 @@ export default function CreatePostsScreen() {
           </View>
         ) : (
           <View style={styles.uploadPhotoContainer}>
-            <Camera style={styles.camera} type={type} ref={setCameraRef}>
-              <View style={styles.photoView}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={async () => {
-                    if (cameraRef) {
-                      const { uri } = await cameraRef.takePictureAsync({
-                        quality: 1,
-                        base64: true,
-                      });
-                      setNewPhotoUri(uri);
-                      await MediaLibrary.createAssetAsync(uri);
-                    }
+            {newPhotoUri !== "" ? (
+              <View>
+                <Image
+                  source={{
+                    uri: newPhotoUri,
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+
+                <Pressable
+                  onPress={() => {
+                    setNewPhotoUri("");
+                    setIsBtnDisabled(true);
+                  }}
+                  style={{
+                    position: "absolute",
+                    bottom: 10,
+                    right: 10,
                   }}
                 >
-                  <UploadingPhotoIcon
-                    circleFill={"rgba(255, 255, 255, 0.3)"}
-                    cameraFill={"rgba(189, 189, 189, 1)"}
-                  />
-                </TouchableOpacity>
+                  <ResetNewPhoto />
+                </Pressable>
               </View>
-            </Camera>
-            <Image source={require({ newPhotoUri })} />
+            ) : (
+              <Camera style={styles.camera} type={type} ref={setCameraRef}>
+                <View style={styles.photoView}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={async () => {
+                      if (cameraRef) {
+                        const { uri } = await cameraRef.takePictureAsync({
+                          quality: 1,
+                          base64: true,
+                        });
+                        await MediaLibrary.createAssetAsync(uri);
+                        setNewPhotoUri(uri);
+                        setIsBtnDisabled(false);
+                      }
+                    }}
+                  >
+                    <UploadingPhotoIcon
+                      circleFill={"rgba(255, 255, 255, 0.3)"}
+                      cameraFill={"rgba(189, 189, 189, 1)"}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </Camera>
+            )}
           </View>
         )}
 
         <Text style={styles.uploadPhotoBottomText}>Завантажте фото</Text>
       </View>
+
       <View>
         <TextInput
           placeholder="Назва..."
@@ -124,7 +151,6 @@ export default function CreatePostsScreen() {
           style={{ ...styles.textInput, marginBottom: 16 }}
           value={photoName}
           onChangeText={setPhotoName}
-          onChange={handleChange}
         ></TextInput>
         <View style={{ position: "relative" }}>
           <TextInput
@@ -137,7 +163,6 @@ export default function CreatePostsScreen() {
             }}
             value={photoLocation}
             onChangeText={setPhotoLocation}
-            onChange={handleChange}
           ></TextInput>
           <View style={styles.locationIcon}>
             <LocationIcon />
