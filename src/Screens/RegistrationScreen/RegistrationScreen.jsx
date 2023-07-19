@@ -13,6 +13,8 @@ import {
 import { styles } from "./StyledRegistrationScreen";
 import { btn } from "../../default-styles";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerDB } from "../../redux/auth/operations";
 
 export default function RegistrationScreen({ navigation }) {
   const [loginFocusColor, setLoginFocusColor] = useState("#E8E8E8");
@@ -22,6 +24,8 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordShowed, setIsPasswordShowed] = useState(true);
+
+  const dispatch = useDispatch();
 
   const handleShowPasswordPress = () => {
     setIsPasswordShowed((show) => !show);
@@ -33,6 +37,14 @@ export default function RegistrationScreen({ navigation }) {
       login: login,
       password: password,
     });
+
+    const newUser = {
+      email: email,
+      login: login,
+      password: password,
+    };
+
+    dispatch(registerDB(newUser));
   };
 
   return (
