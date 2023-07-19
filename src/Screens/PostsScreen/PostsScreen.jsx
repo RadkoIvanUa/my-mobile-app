@@ -5,8 +5,13 @@ import { StyledContainer } from "../../default-styles";
 import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
+import { useSelector } from "react-redux";
+import { selectEmail, selectName } from "../../redux/auth/selectors";
 
 export default function PostsScreen({ navigation }) {
+  const userName = useSelector(selectName);
+  const userEmail = useSelector(selectEmail);
+
   return (
     <>
       <View style={{ ...StyledContainer, marginTop: 32 }}>
@@ -18,8 +23,8 @@ export default function PostsScreen({ navigation }) {
             />
           </View>
           <View>
-            <Text style={styles.userName}>Natali Romanova</Text>
-            <Text style={styles.userEmail}>email@example.com</Text>
+            <Text style={styles.userName}>{userName}</Text>
+            <Text style={styles.userEmail}>{userEmail}</Text>
           </View>
         </View>
 

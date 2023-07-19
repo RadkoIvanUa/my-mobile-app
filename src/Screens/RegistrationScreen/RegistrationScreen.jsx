@@ -12,9 +12,10 @@ import {
 
 import { styles } from "./StyledRegistrationScreen";
 import { btn } from "../../default-styles";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { registerDB } from "../../redux/auth/operations";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 export default function RegistrationScreen({ navigation }) {
   const [loginFocusColor, setLoginFocusColor] = useState("#E8E8E8");
@@ -26,6 +27,7 @@ export default function RegistrationScreen({ navigation }) {
   const [isPasswordShowed, setIsPasswordShowed] = useState(true);
 
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const handleShowPasswordPress = () => {
     setIsPasswordShowed((show) => !show);
@@ -46,6 +48,10 @@ export default function RegistrationScreen({ navigation }) {
 
     dispatch(registerDB(newUser));
   };
+
+  useEffect(() => {
+    isLoggedIn ? navigation.navigate("Home") : navigation.navigate("Login");
+  }, [isLoggedIn]);
 
   return (
     <ImageBackground

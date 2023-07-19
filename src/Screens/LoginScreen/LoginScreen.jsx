@@ -10,8 +10,11 @@ import {
 } from "react-native";
 
 import { styles } from "../LoginScreen/StyledLoginScreen";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { btn } from "../../default-styles";
+import { useDispatch, useSelector } from "react-redux";
+import { loginDB } from "../../redux/auth/operations";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 export default function LoginScreen({ navigation }) {
   const [emailFocusColor, setEmailFocusColor] = useState("#E8E8E8");
@@ -20,13 +23,30 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [isPasswordShowed, setIsPasswordShowed] = useState(true);
 
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   const handleShowPasswordPress = () => {
     setIsPasswordShowed((show) => !show);
   };
 
   const onLogin = () => {
-    navigation.navigate("Home", { email: email, password: password });
+    const userCredentials = {
+      email: email,
+      password: password,
+    };
+
+    dispatch(loginDB(userCredentials));
+
+    console.log(isLoggedIn);
+
+    setEmail("");
+    setPassword("");
   };
+
+  useEffect(() => {
+    isLoggedIn ? navigation.navigate("Home") : navigation.navigate("Login");
+  }, [isLoggedIn]);
 
   return (
     <ImageBackground

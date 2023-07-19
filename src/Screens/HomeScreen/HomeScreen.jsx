@@ -11,10 +11,17 @@ import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost
 import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
 import { Pressable } from "react-native";
 import NavigationIconWrapper from "../../components/NavigationIconWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../redux/auth/operations";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ navigation }) {
+  const dispatch = useDispatch();
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -72,7 +79,15 @@ export default function HomeScreen({ navigation }) {
             letterSpacing: -0.408,
           },
 
-          headerRight: () => <LogOutIcon />,
+          headerRight: () => (
+            <Pressable
+              onPress={() => {
+                dispatch(logOut());
+              }}
+            >
+              <LogOutIcon />
+            </Pressable>
+          ),
           headerRightContainerStyle: {
             right: 16,
           },
