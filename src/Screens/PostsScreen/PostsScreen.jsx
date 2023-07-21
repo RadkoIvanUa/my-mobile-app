@@ -12,17 +12,13 @@ import {
   selectUserUid,
 } from "../../redux/auth/selectors";
 import { selectPostsArr } from "../../redux/posts/selectors";
-import { useEffect } from "react";
-import { getDataFromFirestore } from "../../redux/posts/operations";
 
 export default function PostsScreen({ navigation }) {
-  const postsArr = useSelector(selectPostsArr);
   const userName = useSelector(selectName);
   const userEmail = useSelector(selectEmail);
-
-  {
-    console.log(postsArr);
-  }
+  const postsArr = useSelector(selectPostsArr);
+  const userUid = useSelector(selectUserUid);
+  const userPostsArr = postsArr.filter((post) => post.uid === userUid);
 
   return (
     <>
@@ -44,40 +40,39 @@ export default function PostsScreen({ navigation }) {
           style={styles.profilePostList}
           showsVerticalScrollIndicator={false}
         >
-          {/* {postsArr.map((post) => (
-            <Text>{post.photoUri}</Text>
-          ))} */}
-          {/* <View style={styles.profilePostItem}>
-            <View style={styles.postPhoto}>
-              <Image
-                source={{ uri: post.photoUri }}
-                style={{ width: "100%", height: "100%" }}
-              ></Image>
-            </View>
-            <Text style={styles.photoName}>{post.photoName}</Text>
-            <View style={styles.postInfoFlex}>
-              <View style={styles.postLeftSideFlexItem}>
-                <Pressable
-                  style={{ ...styles.postComents, ...styles.postInfo }}
-                  onPress={() => navigation.navigate("Comments")}
-                >
-                  <CommentsIcon />
-                  <Text>14</Text>
-                </Pressable>
-                <View style={{ ...styles.postLikes, ...styles.postInfo }}>
-                  <LikeIcons />
-                  <Text>456</Text>
-                </View>
+          {userPostsArr.map((post) => (
+            <View style={styles.profilePostItem}>
+              <View style={styles.postPhoto}>
+                <Image
+                  source={{ uri: post.photoUri }}
+                  style={{ width: "100%", height: "100%" }}
+                ></Image>
               </View>
-              <Pressable
-                style={{ ...styles.postLocation, ...styles.postInfo }}
-                onPress={() => navigation.navigate("Map")}
-              >
-                <LocationIcon />
-                <Text style={styles.locationText}>Ukraine</Text>
-              </Pressable>
+              <Text style={styles.photoName}>{post.photoName}</Text>
+              <View style={styles.postInfoFlex}>
+                <View style={styles.postLeftSideFlexItem}>
+                  <Pressable
+                    style={{ ...styles.postComents, ...styles.postInfo }}
+                    onPress={() => navigation.navigate("Comments")}
+                  >
+                    <CommentsIcon />
+                    <Text>14</Text>
+                  </Pressable>
+                  <View style={{ ...styles.postLikes, ...styles.postInfo }}>
+                    <LikeIcons />
+                    <Text>456</Text>
+                  </View>
+                </View>
+                <Pressable
+                  style={{ ...styles.postLocation, ...styles.postInfo }}
+                  onPress={() => navigation.navigate("Map")}
+                >
+                  <LocationIcon />
+                  <Text style={styles.locationText}>{post.photoLocation}</Text>
+                </Pressable>
+              </View>
             </View>
-          </View> */}
+          ))}
         </ScrollView>
       </View>
     </>

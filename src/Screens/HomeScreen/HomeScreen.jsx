@@ -16,18 +16,17 @@ import { logOut } from "../../redux/auth/operations";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataFromFirestore } from "../../redux/posts/operations";
 import { useEffect } from "react";
-import { selectPhotoArr } from "../../redux/posts/selectors";
+import { selectPhotoArr, selectPostsArr } from "../../redux/posts/selectors";
 import { selectUserUid } from "../../redux/auth/selectors";
 
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
-  const userUid = useSelector(selectUserUid);
 
   useEffect(() => {
-    dispatch(getDataFromFirestore(userUid));
-  }, []);
+    dispatch(getDataFromFirestore());
+  }, [dispatch]);
 
   return (
     <Tab.Navigator

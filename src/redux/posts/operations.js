@@ -35,12 +35,12 @@ export const writeDataToFirestore = createAsyncThunk(
 
 export const getDataFromFirestore = createAsyncThunk(
   "posts/getDateFromFirestore",
-  async (uid) => {
+  async () => {
     try {
       const snapshot = await getDocs(collection(db, "posts"));
       const allPosts = [];
       snapshot.forEach((doc) => allPosts.push(doc.data()));
-      return allPosts.filter((post) => post.uid === uid);
+      return allPosts;
     } catch (error) {
       throw error;
     }

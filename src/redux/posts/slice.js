@@ -2,18 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getDataFromFirestore, writeDataToFirestore } from "./operations";
 import { useSelector } from "react-redux";
 import { selectUserUid } from "../auth/selectors";
+import { logOut } from "../auth/operations";
 
 const initialState = {
   postsArr: [],
-  test: "test",
 };
 
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
   extraReducers: (builder) =>
-    builder.addCase(getDataFromFirestore.fulfilled, (state, action) => {
-      state.photoArr = action.payload;
-      console.log(state.photoArr);
-    }),
+    builder
+      .addCase(getDataFromFirestore.fulfilled, (state, action) => {
+        state.postsArr = action.payload;
+      })
+      .addCase(logOut.fulfilled, (state) => {
+        state.postsArr = [];
+      }),
 });

@@ -8,12 +8,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBV1vGfWzOhgKpQFgfUvVAWVn7ui0fJML4",
-  authDomain: "my-mobile-app-393212.firebaseapp.com",
-  projectId: "my-mobile-app-393212",
-  storageBucket: "my-mobile-app-393212.appspot.com",
-  messagingSenderId: "447559223206",
-  appId: "1:447559223206:web:0abd2ecfa45a95b276b167",
+  apiKey: "AIzaSyBwbeRcjnqTFKhaBIzAucpghY9LfiHnB1I",
+  authDomain: "my-homework-457ce.firebaseapp.com",
+  projectId: "my-homework-457ce",
+  storageBucket: "my-homework-457ce.appspot.com",
+  messagingSenderId: "890864899599",
+  appId: "1:890864899599:web:679813d09a337fedeff57a",
 };
 
 const app = initializeApp(firebaseConfig);
