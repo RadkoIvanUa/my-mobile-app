@@ -1,12 +1,12 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile,
   signOut,
 } from "firebase/auth";
-import { auth } from "../../../config";
+import { auth, db } from "../../../config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 export const registerDB = createAsyncThunk(
   "auth/register",
@@ -36,7 +36,11 @@ export const loginDB = createAsyncThunk(
   }
 );
 
-export const logOut = createAsyncThunk(
-  "auth/logout",
-  async () => await signOut(auth)
-);
+export const logOut = createAsyncThunk("auth/logout", async () => {
+  try {
+    const resp = await signOut(auth);
+    return resp;
+  } catch (error) {
+    throw error;
+  }
+});

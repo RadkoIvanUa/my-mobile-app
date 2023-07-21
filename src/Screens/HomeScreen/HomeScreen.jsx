@@ -11,16 +11,23 @@ import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost
 import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
 import { Pressable } from "react-native";
 import NavigationIconWrapper from "../../components/NavigationIconWrapper";
-import { useDispatch, useSelector } from "react-redux";
+
 import { logOut } from "../../redux/auth/operations";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getDataFromFirestore } from "../../redux/posts/operations";
+import { useEffect } from "react";
+import { selectPhotoArr } from "../../redux/posts/selectors";
+import { selectUserUid } from "../../redux/auth/selectors";
 
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
+  const userUid = useSelector(selectUserUid);
 
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  useEffect(() => {
+    dispatch(getDataFromFirestore(userUid));
+  }, []);
 
   return (
     <Tab.Navigator

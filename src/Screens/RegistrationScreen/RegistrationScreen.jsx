@@ -14,7 +14,10 @@ import { styles } from "./StyledRegistrationScreen";
 import { btn } from "../../default-styles";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerDB } from "../../redux/auth/operations";
+import {
+  registerDB,
+  writeUserDataToFirestore,
+} from "../../redux/auth/operations";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 export default function RegistrationScreen({ navigation }) {
@@ -34,12 +37,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const onRegistration = () => {
-    navigation.navigate("Home", {
-      email: email,
-      login: login,
-      password: password,
-    });
-
+    navigation.navigate("Home");
     const newUser = {
       email: email,
       login: login,

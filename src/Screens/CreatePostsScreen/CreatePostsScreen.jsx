@@ -18,6 +18,12 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import ResetNewPhoto from "../../img/icons/IconsComponents/ResetNewPhoto";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getDataFromFirestore,
+  writeDataToFirestore,
+} from "../../redux/posts/operations";
+import { selectUserUid } from "../../redux/auth/selectors";
 
 export default function CreatePostsScreen({ navigation }) {
   const [isBtnDisbled, setIsBtnDisabled] = useState(true);
@@ -25,6 +31,7 @@ export default function CreatePostsScreen({ navigation }) {
   const [photoLocation, setPhotoLocation] = useState("");
   const [location, setLocation] = useState(null);
   const [newPhotoUri, setNewPhotoUri] = useState("");
+  const dispatch = useDispatch();
 
   // Camera
   const [hasPermission, setHasPermission] = useState(null);
@@ -56,14 +63,17 @@ export default function CreatePostsScreen({ navigation }) {
       latitude: getLocation.coords.latitude,
       longitude: getLocation.coords.longitude,
     };
-
     setLocation(coords);
 
-    navigation.navigate("Posts", {
+    const newPost = {
       photoName: photoName,
       photoLocation: photoLocation,
       location: location,
-    });
+      uri: newPhotoUri,
+    };
+    dispatch(writeDataToFirestore(newPost));
+
+    navigation.navigate("Posts");
 
     setPhotoName("");
     setPhotoLocation("");

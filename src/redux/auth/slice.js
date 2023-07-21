@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logOut, loginDB, registerDB } from "./operations";
+import {
+  logOut,
+  loginDB,
+  registerDB,
+  writeUserDataToFirestore,
+} from "./operations";
 
 const initialState = {
-  user: { name: null, email: null },
+  user: { name: null, email: null, uid: null },
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
@@ -17,18 +22,21 @@ const authSlice = createSlice({
         state.user.name = action.payload.user.displayName;
         state.user.email = action.payload.user.email;
         state.token = action.payload.user.accessToken;
+        state.user.uid = action.payload.user.uid;
         state.isLoggedIn = true;
       })
       .addCase(loginDB.fulfilled, (state, action) => {
-        state.isLoggedIn = true;
         state.user.name = action.payload.user.displayName;
         state.user.email = action.payload.user.email;
         state.token = action.payload.user.accessToken;
+        state.user.uid = action.payload.user.uid;
+        state.isLoggedIn = true;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user.name = null;
         state.user.email = null;
         state.token = null;
+        state.uid = null;
         state.isLoggedIn = false;
       }),
 });

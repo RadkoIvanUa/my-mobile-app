@@ -5,12 +5,24 @@ import { StyledContainer } from "../../default-styles";
 import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
-import { useSelector } from "react-redux";
-import { selectEmail, selectName } from "../../redux/auth/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectEmail,
+  selectName,
+  selectUserUid,
+} from "../../redux/auth/selectors";
+import { selectPostsArr } from "../../redux/posts/selectors";
+import { useEffect } from "react";
+import { getDataFromFirestore } from "../../redux/posts/operations";
 
 export default function PostsScreen({ navigation }) {
+  const postsArr = useSelector(selectPostsArr);
   const userName = useSelector(selectName);
   const userEmail = useSelector(selectEmail);
+
+  {
+    console.log(postsArr);
+  }
 
   return (
     <>
@@ -32,14 +44,17 @@ export default function PostsScreen({ navigation }) {
           style={styles.profilePostList}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.profilePostItem}>
+          {/* {postsArr.map((post) => (
+            <Text>{post.photoUri}</Text>
+          ))} */}
+          {/* <View style={styles.profilePostItem}>
             <View style={styles.postPhoto}>
               <Image
-                source={require("../../img/PhotoBG.jpg")}
+                source={{ uri: post.photoUri }}
                 style={{ width: "100%", height: "100%" }}
               ></Image>
             </View>
-            <Text style={styles.photoName}>photoName</Text>
+            <Text style={styles.photoName}>{post.photoName}</Text>
             <View style={styles.postInfoFlex}>
               <View style={styles.postLeftSideFlexItem}>
                 <Pressable
@@ -62,38 +77,7 @@ export default function PostsScreen({ navigation }) {
                 <Text style={styles.locationText}>Ukraine</Text>
               </Pressable>
             </View>
-          </View>
-          <View style={styles.profilePostItem}>
-            <View style={styles.postPhoto}>
-              <Image
-                source={require("../../img/test-photo.jpg")}
-                style={{ width: "100%", height: "100%" }}
-              ></Image>
-            </View>
-            <Text style={styles.photoName}>photoName</Text>
-            <View style={styles.postInfoFlex}>
-              <View style={styles.postLeftSideFlexItem}>
-                <Pressable
-                  style={{ ...styles.postComents, ...styles.postInfo }}
-                  onPress={() => navigation.navigate("Comments")}
-                >
-                  <CommentsIcon />
-                  <Text>14</Text>
-                </Pressable>
-                <View style={{ ...styles.postLikes, ...styles.postInfo }}>
-                  <LikeIcons />
-                  <Text>456</Text>
-                </View>
-              </View>
-              <Pressable
-                style={{ ...styles.postLocation, ...styles.postInfo }}
-                onPress={() => navigation.navigate("Map")}
-              >
-                <LocationIcon />
-                <Text style={styles.locationText}>Ukraine</Text>
-              </Pressable>
-            </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </>

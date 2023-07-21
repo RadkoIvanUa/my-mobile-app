@@ -37,11 +37,9 @@ export default function LoginScreen({ navigation }) {
     };
 
     dispatch(loginDB(userCredentials));
-
-    console.log(isLoggedIn);
-
     setEmail("");
     setPassword("");
+    console.log(userCredentials);
   };
 
   useEffect(() => {
