@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
   },
   visitorComment: {
     display: "flex",
@@ -84,7 +85,7 @@ export const styles = StyleSheet.create({
 
   inputWrapper: {
     position: "absolute",
-    bottom: -80,
+    bottom: -70,
     left: 16,
     width: "100%",
   },

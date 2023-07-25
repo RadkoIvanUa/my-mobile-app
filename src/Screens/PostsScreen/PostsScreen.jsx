@@ -6,19 +6,27 @@ import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
 import { useDispatch, useSelector } from "react-redux";
+import { selectEmail, selectName } from "../../redux/auth/selectors";
 import {
-  selectEmail,
-  selectName,
-  selectUserUid,
-} from "../../redux/auth/selectors";
-import { selectPostsArr } from "../../redux/posts/selectors";
+  selectIsPostUploaded,
+  selectPostsArr,
+} from "../../redux/posts/selectors";
+import { collection, doc, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from "../../../config";
+import {
+  getDataFromFirestore,
+  getUserPostsData,
+} from "../../redux/posts/operations";
+import { useEffect, useState } from "react";
+import getUserPostsArr from "../../helpers/getUserPostsArr";
+import { getPostData } from "../../helpers/getPostData";
 
 export default function PostsScreen({ navigation }) {
   const userName = useSelector(selectName);
   const userEmail = useSelector(selectEmail);
-  const postsArr = useSelector(selectPostsArr);
-  const userUid = useSelector(selectUserUid);
-  const userPostsArr = postsArr.filter((post) => post.uid === userUid);
+  const userPostsArr = getUserPostsArr();
+
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -41,10 +49,10 @@ export default function PostsScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
         >
           {userPostsArr.map((post) => (
-            <View style={styles.profilePostItem}>
+            <View key={post.photoUrl} style={styles.profilePostItem}>
               <View style={styles.postPhoto}>
                 <Image
-                  source={{ uri: post.photoUri }}
+                  source={{ uri: post.photoUrl }}
                   style={{ width: "100%", height: "100%" }}
                 ></Image>
               </View>
@@ -53,7 +61,13 @@ export default function PostsScreen({ navigation }) {
                 <View style={styles.postLeftSideFlexItem}>
                   <Pressable
                     style={{ ...styles.postComents, ...styles.postInfo }}
-                    onPress={() => navigation.navigate("Comments")}
+                    onPress={() => {
+                      navigation.navigate("Comments", {
+                        url: post.photoUrl,
+                        docId: post.docId,
+                        userPostsArr: userPostsArr,
+                      });
+                    }}
                   >
                     <CommentsIcon />
                     <Text>14</Text>
@@ -65,7 +79,24 @@ export default function PostsScreen({ navigation }) {
                 </View>
                 <Pressable
                   style={{ ...styles.postLocation, ...styles.postInfo }}
-                  onPress={() => navigation.navigate("Map")}
+                  onPress={() =>
+                    navigation.navigate(
+                      "Map",
+                      post.location
+                        ? {
+                            location: {
+                              latitude: post.location.latitude,
+                              longitude: post.location.longitude,
+                            },
+                          }
+                        : {
+                            location: {
+                              latitude: 0,
+                              longitude: 0,
+                            },
+                          }
+                    )
+                  }
                 >
                   <LocationIcon />
                   <Text style={styles.locationText}>{post.photoLocation}</Text>

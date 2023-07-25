@@ -3,27 +3,12 @@ import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { styles } from "./StyledMapScreen";
+import { Text } from "react-native";
 
-const MapScreen = () => {
-  const [location, setLocation] = useState(null);
+const MapScreen = ({ route }) => {
+  const location = route.params.location;
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setLocation(coords);
-    })();
-  }, []);
-
-  return (
+  return location.latitude !== 0 ? (
     <View style={styles.container}>
       <MapView
         style={styles.mapStyle}
@@ -39,6 +24,10 @@ const MapScreen = () => {
         )}
       </MapView>
     </View>
+  ) : (
+    <Text style={{ textAlign: "center", fontSize: 20 }}>
+      This photo without location
+    </Text>
   );
 };
 

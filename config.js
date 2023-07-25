@@ -5,15 +5,15 @@ import { getAuth } from "firebase/auth";
 // Функція для підключення бази даних у проект
 import { getFirestore } from "firebase/firestore";
 // Функція для підключення сховища файлів в проект
-import { getStorage } from "firebase/storage";
+import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBwbeRcjnqTFKhaBIzAucpghY9LfiHnB1I",
-  authDomain: "my-homework-457ce.firebaseapp.com",
-  projectId: "my-homework-457ce",
-  storageBucket: "my-homework-457ce.appspot.com",
-  messagingSenderId: "890864899599",
-  appId: "1:890864899599:web:679813d09a337fedeff57a",
+  apiKey: "AIzaSyBV1vGfWzOhgKpQFgfUvVAWVn7ui0fJML4",
+  authDomain: "my-mobile-app-393212.firebaseapp.com",
+  projectId: "my-mobile-app-393212",
+  storageBucket: "my-mobile-app-393212.appspot.com",
+  messagingSenderId: "447559223206",
+  appId: "1:447559223206:web:0abd2ecfa45a95b276b167",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -21,3 +21,4 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+export const storageRef = ref(storage);

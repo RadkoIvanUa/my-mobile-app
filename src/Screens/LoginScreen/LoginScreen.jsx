@@ -15,6 +15,7 @@ import { btn } from "../../default-styles";
 import { useDispatch, useSelector } from "react-redux";
 import { loginDB } from "../../redux/auth/operations";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { getDataFromFirestore } from "../../redux/posts/operations";
 
 export default function LoginScreen({ navigation }) {
   const [emailFocusColor, setEmailFocusColor] = useState("#E8E8E8");
@@ -39,7 +40,6 @@ export default function LoginScreen({ navigation }) {
     dispatch(loginDB(userCredentials));
     setEmail("");
     setPassword("");
-    console.log(userCredentials);
   };
 
   useEffect(() => {

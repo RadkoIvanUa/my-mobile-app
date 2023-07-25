@@ -9,9 +9,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native";
 import BackArrow from "./src/img/icons/IconsComponents/BackArrow";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { store, persistor } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { useEffect } from "react";
+import getUserPostsArr from "./src/helpers/getUserPostsArr";
 
 const MainStack = createStackNavigator();
 
@@ -31,15 +33,6 @@ export default function App() {
         <NavigationContainer>
           <MainStack.Navigator initialRouteName="Registration">
             <MainStack.Screen
-              name="Registration"
-              component={RegistrationScreen}
-              options={{
-                headerStyle: {
-                  height: 0,
-                },
-              }}
-            />
-            <MainStack.Screen
               name="Login"
               component={LoginScreen}
               options={{
@@ -49,6 +42,16 @@ export default function App() {
                 headerLeft: null,
               }}
             />
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{
+                headerStyle: {
+                  height: 0,
+                },
+              }}
+            />
+
             <MainStack.Screen
               name="Home"
               component={HomeScreen}

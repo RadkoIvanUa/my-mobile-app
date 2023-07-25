@@ -19,11 +19,12 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import ResetNewPhoto from "../../img/icons/IconsComponents/ResetNewPhoto";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getDataFromFirestore,
-  writeDataToFirestore,
-} from "../../redux/posts/operations";
-import { selectUserUid } from "../../redux/auth/selectors";
+import { writeDataToFirestore } from "../../redux/posts/operations";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../../config";
+import { generateRandomString } from "../../helpers/generateUniqueString";
+import { selectIsPostUploading } from "../../redux/posts/selectors";
+import { ActivityIndicator } from "react-native";
 
 export default function CreatePostsScreen({ navigation }) {
   const [isBtnDisbled, setIsBtnDisabled] = useState(true);
@@ -31,6 +32,8 @@ export default function CreatePostsScreen({ navigation }) {
   const [photoLocation, setPhotoLocation] = useState("");
   const [location, setLocation] = useState(null);
   const [newPhotoUri, setNewPhotoUri] = useState("");
+  const [isPostUploading, setIsPostUploading] = useState(false);
+
   const dispatch = useDispatch();
 
   // Camera
@@ -58,27 +61,38 @@ export default function CreatePostsScreen({ navigation }) {
   }, []);
 
   const handleCreatePostPress = async () => {
+    setIsPostUploading(true);
     let getLocation = await Location.getCurrentPositionAsync({});
     const coords = {
       latitude: getLocation.coords.latitude,
       longitude: getLocation.coords.longitude,
     };
     setLocation(coords);
+    const photoNameForStorage =
+      photoName.replaceAll(" ", "") + generateRandomString(10);
+    const imagesRef = ref(storage, `images/${photoNameForStorage}`);
+    const response = await fetch(newPhotoUri);
+    const file = await response.blob();
 
-    const newPost = {
-      photoName: photoName,
-      photoLocation: photoLocation,
-      location: location,
-      uri: newPhotoUri,
-    };
-    dispatch(writeDataToFirestore(newPost));
-
+    uploadBytes(imagesRef, file).then(() => {
+      getDownloadURL(ref(storage, `images/${photoNameForStorage}`)).then(
+        (url) => {
+          const newPost = {
+            photoName: photoName,
+            photoLocation: photoLocation,
+            location: location,
+            url: url,
+          };
+          dispatch(writeDataToFirestore(newPost));
+        }
+      );
+    });
     navigation.navigate("Posts");
-
     setPhotoName("");
     setPhotoLocation("");
     setNewPhotoUri("");
     setIsBtnDisabled(true);
+    setIsPostUploading(false);
   };
 
   return (
@@ -153,7 +167,6 @@ export default function CreatePostsScreen({ navigation }) {
 
         <Text style={styles.uploadPhotoBottomText}>Завантажте фото</Text>
       </View>
-
       <View>
         <TextInput
           placeholder="Назва..."
@@ -162,6 +175,7 @@ export default function CreatePostsScreen({ navigation }) {
           value={photoName}
           onChangeText={setPhotoName}
         ></TextInput>
+
         <View style={{ position: "relative" }}>
           <TextInput
             placeholder="Місцевість..."
@@ -209,17 +223,35 @@ export default function CreatePostsScreen({ navigation }) {
           }
           disabled={isBtnDisbled}
         >
-          <Text
-            style={isBtnDisbled ? { ...btn.text, color: "#BDBDBD" } : btn.text}
-            onPress={handleCreatePostPress}
-          >
-            Опублікувати
-          </Text>
+          {isPostUploading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text
+              style={
+                isBtnDisbled ? { ...btn.text, color: "#BDBDBD" } : btn.text
+              }
+              onPress={handleCreatePostPress}
+            >
+              Опублікувати
+            </Text>
+          )}
         </Pressable>
+
         <View style={styles.deletePosTBtnFlex}>
-          <View style={styles.deletePostBtn}>
-            <DeleteBascket />
-          </View>
+          <Pressable
+            style={
+              isBtnDisbled
+                ? styles.deletePostBtn
+                : { ...styles.deletePostBtn, backgroundColor: "#FF6C00" }
+            }
+            onPress={() => {
+              setIsBtnDisabled(true);
+              setPhotoLocation("");
+              setPhotoName("");
+            }}
+          >
+            <DeleteBascket stroke={isBtnDisbled ? "#BDBDBD" : "#fff"} />
+          </Pressable>
         </View>
       </View>
     </View>
