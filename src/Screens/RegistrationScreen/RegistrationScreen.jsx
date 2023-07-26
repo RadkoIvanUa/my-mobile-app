@@ -14,11 +14,12 @@ import { styles } from "./StyledRegistrationScreen";
 import { btn } from "../../default-styles";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { registerDB } from "../../redux/auth/operations";
 import {
-  registerDB,
-  writeUserDataToFirestore,
-} from "../../redux/auth/operations";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
+  selecIsGoingToLogIn,
+  selectIsLoggedIn,
+} from "../../redux/auth/selectors";
+import { ActivityIndicator } from "react-native";
 
 export default function RegistrationScreen({ navigation }) {
   const [loginFocusColor, setLoginFocusColor] = useState("#E8E8E8");
@@ -28,23 +29,34 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordShowed, setIsPasswordShowed] = useState(true);
+  const [isBtnDisbled, setIsBtnDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isGoingToLogIn = useSelector(selecIsGoingToLogIn);
+
+  useEffect(() => {
+    email === "" || password === ""
+      ? setIsBtnDisabled(true)
+      : setIsBtnDisabled(false);
+  }, [email, password]);
 
   const handleShowPasswordPress = () => {
     setIsPasswordShowed((show) => !show);
   };
 
   const onRegistration = () => {
-    navigation.navigate("Home");
     const newUser = {
       email: email,
       login: login,
       password: password,
     };
-
     dispatch(registerDB(newUser));
+    navigation.navigate("Home");
+
+    setEmail("");
+    setPassword("");
+    setLogin("");
   };
 
   useEffect(() => {
@@ -129,8 +141,23 @@ export default function RegistrationScreen({ navigation }) {
                 </Text>
               </Pressable>
             </View>
-            <Pressable style={btn} onPress={onRegistration}>
-              <Text style={btn.text}>Зареєстуватися</Text>
+            <Pressable
+              style={
+                isBtnDisbled
+                  ? {
+                      ...btn,
+                      backgroundColor: "#F6F6F6",
+                    }
+                  : btn
+              }
+              disabled={isBtnDisbled}
+              onPress={onRegistration}
+            >
+              {isGoingToLogIn ? (
+                <ActivityIndicator size="small" color="#FF6C00" />
+              ) : (
+                <Text style={btn.text}>Зареєстуватися</Text>
+              )}
             </Pressable>
             <Pressable>
               <Text

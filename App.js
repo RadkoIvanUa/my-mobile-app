@@ -9,13 +9,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native";
 import BackArrow from "./src/img/icons/IconsComponents/BackArrow";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import { store, persistor } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { useEffect } from "react";
-import getUserPostsArr from "./src/helpers/getUserPostsArr";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const MainStack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,8 +30,18 @@ export default function App() {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
-          <MainStack.Navigator initialRouteName="Registration">
-            <MainStack.Screen
+          <Stack.Navigator initialRouteName="Registration">
+            <Stack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{
+                headerStyle: {
+                  height: 0,
+                },
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="Login"
               component={LoginScreen}
               options={{
@@ -40,19 +49,11 @@ export default function App() {
                   height: 0,
                 },
                 headerLeft: null,
-              }}
-            />
-            <MainStack.Screen
-              name="Registration"
-              component={RegistrationScreen}
-              options={{
-                headerStyle: {
-                  height: 0,
-                },
+                headerShown: false,
               }}
             />
 
-            <MainStack.Screen
+            <Stack.Screen
               name="Home"
               component={HomeScreen}
               options={{
@@ -61,7 +62,7 @@ export default function App() {
                 headerLeft: null,
               }}
             />
-            <MainStack.Screen
+            <Stack.Screen
               name="Comments"
               component={CommentsScreen}
               options={({ navigation }) => ({
@@ -90,7 +91,7 @@ export default function App() {
                 },
               })}
             />
-            <MainStack.Screen
+            <Stack.Screen
               name="Map"
               component={MapScreen}
               options={({ navigation }) => ({
@@ -119,7 +120,7 @@ export default function App() {
                 },
               })}
             />
-          </MainStack.Navigator>
+          </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
     </Provider>

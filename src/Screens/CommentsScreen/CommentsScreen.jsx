@@ -15,61 +15,54 @@ import { ScrollView } from "react-native";
 import SendCommentButton from "../../img/icons/IconsComponents/SendCommentButton";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addCommentToPhoto,
-  addCommentsToStore,
-  getDataFromFirestore,
-} from "../../redux/posts/operations";
+import { getDataFromFirestore } from "../../redux/posts/operations";
 
 import { addCommentsToDB } from "../../helpers/addComments";
-import getUserPostsArr from "../../helpers/getUserPostsArr";
 
 import { generateRandomString } from "../../helpers/generateUniqueString";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../config";
-import { getPostData } from "../../helpers/getPostData";
-import {
-  selectIsCommentsAdded,
-  selectPostsArr,
-  selectUserPostsData,
-} from "../../redux/posts/selectors";
+import getMonth from "../../helpers/getMonth";
+import { selectName } from "../../redux/auth/selectors";
 
 export default function CommentsScreen({ route }) {
   const [photoComment, setPhotoComment] = useState("");
-  const [userPost, setUserPost] = useState([]);
-
-  // let postsArr = [];
-  // let filtered = [];
-
-  // const dbRef = collection(db, "posts");
-  // onSnapshot(dbRef, (docsSnap) => {
-  //   docsSnap.forEach((doc) => {
-  //     postsArr.push(doc.data());
-  //   });
-
-  //   filtered = postsArr.filter((post) => post.docId === route.params.docId);
-  //   console.log(filtered);
-  // });
-
-  // const selectedUserArr = route.params.userPostsArr.filter(
-  //   (post) => post.docId === route.params.docId
-  // );
-
-  const selectedUserArr = route.params.userPostsArr.filter(
-    (post) => post.docId === route.params.docId
-  );
+  const [userComments, setUserComments] = useState([]);
+  const [commentsCount, setCommentsCount] = useState(0);
+  const userName = useSelector(selectName);
 
   useEffect(() => {
-    setUserPost(selectedUserArr);
+    const dbRef = collection(db, "posts");
+    const unsubscribe = onSnapshot(dbRef, (docsSnap) => {
+      const updatedPosts = docsSnap.docs.map((doc) => doc.data());
+      const findedPost = updatedPosts.find(
+        (post) => post.docId === route.params.docId
+      );
+      const commentLenght = findedPost.comments.length;
+      setUserComments(findedPost.comments.reverse());
+      setCommentsCount(commentLenght);
+    });
+    return () => unsubscribe();
   }, []);
 
   const dispatch = useDispatch();
 
   const handleAddComment = () => {
     const photoCommentObj = {
+      userName: userName,
       photoComment,
       photoCommenId: generateRandomString(10),
+      dayOfMonth: new Date().getDate(),
+      month: getMonth(),
+      year: new Date().getFullYear(),
+      hour: new Date().getHours(),
+      minutes: new Date().getMinutes(),
     };
+
+    const ref = doc(db, "posts", route.params.docId);
+    updateDoc(ref, {
+      commentsCount: commentsCount + 1,
+    });
 
     addCommentsToDB("posts", route.params.docId, photoCommentObj);
 
@@ -95,24 +88,39 @@ export default function CommentsScreen({ route }) {
             style={{ height: windowHeight - 490 }}
             showsVerticalScrollIndicator={false}
           >
-            {userPost.map((post) =>
-              post.comments.map((comment) => (
-                <View style={styles.visitorComment}>
-                  <View style={styles.commentsUserPhoto}>
-                    <Image
-                      style={{ width: "100%", height: "100%" }}
-                      source={require("../../img/PhotoBG.jpg")}
-                    ></Image>
-                  </View>
-                  <View style={styles.commentTextContainer}>
-                    <Text>{comment.photoComment}</Text>
-                    <Text style={styles.commentDateNow}>
-                      09 червня, 2020 | 08:40
-                    </Text>
-                  </View>
+            {userComments.map((comment) => (
+              <View key={comment.photoCommenId} style={styles.visitorComment}>
+                {/* <View style={styles.commentsUserPhoto}> */}
+                {/* <Image
+                    style={{ width: "100%", height: "100%" }}
+                    source={require("../../img/PhotoBG.jpg")}
+                  ></Image> */}
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {comment.userName}
+                </Text>
+                {/* </View> */}
+                <View style={styles.commentTextContainer}>
+                  <Text style={{ marginBottom: 8 }}>
+                    {comment.photoComment}
+                  </Text>
+                  <Text style={styles.commentDateNow}>
+                    {/* 09 червня, 2020 | 08:40 */}
+                    {`${comment.dayOfMonth} ${comment.month}, ${
+                      comment.year
+                    } | ${comment.hour}:${
+                      comment.minutes < 10
+                        ? `0${comment.minutes}`
+                        : comment.minutes
+                    } `}
+                  </Text>
                 </View>
-              ))
-            )}
+              </View>
+            ))}
 
             {/* Owner comment */}
             {/* <View style={styles.ownerComment}>

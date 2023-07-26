@@ -6,7 +6,6 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../../../config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection, getDocs } from "firebase/firestore";
 
 export const registerDB = createAsyncThunk(
   "auth/register",

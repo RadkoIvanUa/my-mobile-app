@@ -14,14 +14,16 @@ import NoCommentsIcon from "../../img/icons/IconsComponents/NoCommentsIcon";
 import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
-import HomeNavigationIcon from "../../img/icons/IconsComponents/HomeNavigationIcon";
-import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
-import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost";
-import { useSelector } from "react-redux";
-import { selectPostsArr } from "../../redux/posts/selectors";
+
 import getUserPostsArr from "../../helpers/getUserPostsArr";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/auth/operations";
 export default function ProfileScreen({ navigation }) {
   const userPostsArr = getUserPostsArr();
+  const sortedUserPostsArr = userPostsArr.sort(
+    (a, b) => a.timestamp - b.timestamp
+  );
+  const dispatch = useDispatch();
 
   return (
     <ImageBackground
@@ -29,7 +31,12 @@ export default function ProfileScreen({ navigation }) {
       style={{ height: "100%" }}
     >
       <View style={styles.profileWrapper}>
-        <Pressable style={styles.logOutIcon}>
+        <Pressable
+          onPress={() => {
+            dispatch(logOut());
+          }}
+          style={styles.logOutIcon}
+        >
           <LogOutIcon />
         </Pressable>
         <View style={styles.photoSpace}>
@@ -46,7 +53,7 @@ export default function ProfileScreen({ navigation }) {
             style={styles.profilePostList}
             showsVerticalScrollIndicator={false}
           >
-            {userPostsArr.map((post) => (
+            {sortedUserPostsArr.reverse().map((post) => (
               <View key={post.photoUrl} style={styles.profilePostItem}>
                 <View style={styles.postPhoto}>
                   <Image
@@ -60,11 +67,18 @@ export default function ProfileScreen({ navigation }) {
                     <Pressable
                       style={{ ...styles.postComents, ...styles.postInfo }}
                       onPress={() =>
-                        navigation.navigate("Comments", { url: post.photoUrl })
+                        navigation.navigate("Comments", {
+                          url: post.photoUrl,
+                          docId: post.docId,
+                        })
                       }
                     >
-                      <CommentsIcon />
-                      <Text>14</Text>
+                      {post.commentsCount === 0 ? (
+                        <NoCommentsIcon />
+                      ) : (
+                        <CommentsIcon />
+                      )}
+                      <Text>{post.commentsCount}</Text>
                     </Pressable>
                     <View style={{ ...styles.postLikes, ...styles.postInfo }}>
                       <LikeIcons />
@@ -73,32 +87,35 @@ export default function ProfileScreen({ navigation }) {
                   </View>
                   <Pressable
                     style={{ ...styles.postLocation, ...styles.postInfo }}
-                    onPress={() => navigation.navigate("Map")}
+                    onPress={() =>
+                      navigation.navigate(
+                        "Map",
+                        post.location
+                          ? {
+                              location: {
+                                latitude: post.location.latitude,
+                                longitude: post.location.longitude,
+                              },
+                            }
+                          : {
+                              location: {
+                                latitude: 0,
+                                longitude: 0,
+                              },
+                            }
+                      )
+                    }
                   >
                     <LocationIcon />
-                    <Text style={styles.locationText}>Ukraine</Text>
+                    <Text style={styles.locationText}>
+                      {post.photoLocation}
+                    </Text>
                   </Pressable>
                 </View>
               </View>
             ))}
           </ScrollView>
         </View>
-
-        {/* <View style={styles.profileNavigation}>
-        <View style={styles.profileNavigationWrapper}>
-          <Pressable style={styles.featcherIcon}>
-            <HomeNavigationIcon />
-          </Pressable>
-          <Pressable style={styles.featcherIcon}>
-            <View style={styles.ProfileNavigationIconWrapper}>
-              <ProfileNavigationIcon stroke={"#fff"} />
-            </View>
-          </Pressable>
-          <Pressable style={styles.featcherIcon}>
-            <NavigationAddPost fill={"#212121"} />
-          </Pressable>
-        </View>
-      </View> */}
       </View>
     </ImageBackground>
   );

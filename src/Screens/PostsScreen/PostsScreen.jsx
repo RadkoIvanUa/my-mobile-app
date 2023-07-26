@@ -5,28 +5,18 @@ import { StyledContainer } from "../../default-styles";
 import CommentsIcon from "../../img/icons/IconsComponents/CommentsIcon";
 import LocationIcon from "../../img/icons/IconsComponents/LocationIcon";
 import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
-import { useDispatch, useSelector } from "react-redux";
+import NoCommentsIcon from "../../img/icons/IconsComponents/NoCommentsIcon";
+import { useSelector } from "react-redux";
 import { selectEmail, selectName } from "../../redux/auth/selectors";
-import {
-  selectIsPostUploaded,
-  selectPostsArr,
-} from "../../redux/posts/selectors";
-import { collection, doc, getDocs, onSnapshot } from "firebase/firestore";
-import { db } from "../../../config";
-import {
-  getDataFromFirestore,
-  getUserPostsData,
-} from "../../redux/posts/operations";
-import { useEffect, useState } from "react";
 import getUserPostsArr from "../../helpers/getUserPostsArr";
-import { getPostData } from "../../helpers/getPostData";
 
 export default function PostsScreen({ navigation }) {
   const userName = useSelector(selectName);
   const userEmail = useSelector(selectEmail);
   const userPostsArr = getUserPostsArr();
-
-  const dispatch = useDispatch();
+  const sortedUserPostsArr = userPostsArr.sort(
+    (a, b) => a.timestamp - b.timestamp
+  );
 
   return (
     <>
@@ -48,7 +38,7 @@ export default function PostsScreen({ navigation }) {
           style={styles.profilePostList}
           showsVerticalScrollIndicator={false}
         >
-          {userPostsArr.map((post) => (
+          {sortedUserPostsArr.reverse().map((post) => (
             <View key={post.photoUrl} style={styles.profilePostItem}>
               <View style={styles.postPhoto}>
                 <Image
@@ -65,12 +55,15 @@ export default function PostsScreen({ navigation }) {
                       navigation.navigate("Comments", {
                         url: post.photoUrl,
                         docId: post.docId,
-                        userPostsArr: userPostsArr,
                       });
                     }}
                   >
-                    <CommentsIcon />
-                    <Text>14</Text>
+                    {post.commentsCount === 0 ? (
+                      <NoCommentsIcon />
+                    ) : (
+                      <CommentsIcon />
+                    )}
+                    <Text>{post.commentsCount}</Text>
                   </Pressable>
                   <View style={{ ...styles.postLikes, ...styles.postInfo }}>
                     <LikeIcons />

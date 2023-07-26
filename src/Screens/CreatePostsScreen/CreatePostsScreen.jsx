@@ -18,12 +18,11 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import ResetNewPhoto from "../../img/icons/IconsComponents/ResetNewPhoto";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { writeDataToFirestore } from "../../redux/posts/operations";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../../config";
 import { generateRandomString } from "../../helpers/generateUniqueString";
-import { selectIsPostUploading } from "../../redux/posts/selectors";
 import { ActivityIndicator } from "react-native";
 
 export default function CreatePostsScreen({ navigation }) {
@@ -63,6 +62,7 @@ export default function CreatePostsScreen({ navigation }) {
   const handleCreatePostPress = async () => {
     setIsPostUploading(true);
     let getLocation = await Location.getCurrentPositionAsync({});
+
     const coords = {
       latitude: getLocation.coords.latitude,
       longitude: getLocation.coords.longitude,

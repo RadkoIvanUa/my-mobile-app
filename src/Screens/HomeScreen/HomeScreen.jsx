@@ -4,9 +4,8 @@ import PostsScreen from "../PostsScreen/PostsScreen";
 import LogOutIcon from "../../img/icons/IconsComponents/LogOutIcon";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
 import BackArrow from "../../img/icons/IconsComponents/BackArrow";
-import { Platform, View } from "react-native";
+import { Platform } from "react-native";
 import HomeNavigationIcon from "../../img/icons/IconsComponents/HomeNavigationIcon";
-import LikeIcons from "../../img/icons/IconsComponents/LikeIcons";
 import NavigationAddPost from "../../img/icons/IconsComponents/NavigationAddPost";
 import ProfileNavigationIcon from "../../img/icons/IconsComponents/ProfileNavigationIcon";
 import { Pressable } from "react-native";
@@ -16,21 +15,19 @@ import { logOut } from "../../redux/auth/operations";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataFromFirestore } from "../../redux/posts/operations";
 import { useEffect } from "react";
-import {
-  selectIsPostUploaded,
-  selectPhotoArr,
-  selectPostsArr,
-} from "../../redux/posts/selectors";
-import { selectUserUid } from "../../redux/auth/selectors";
+import { selectIsPostUploaded } from "../../redux/posts/selectors";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ navigation }) {
   const isPostUploaded = useSelector(selectIsPostUploaded);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getDataFromFirestore());
-  }, [isPostUploaded]);
+  }, [isPostUploaded, isLoggedIn]);
 
   return (
     <Tab.Navigator

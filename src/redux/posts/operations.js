@@ -21,10 +21,11 @@ export const writeDataToFirestore = createAsyncThunk(
         photoName: photoData.photoName,
         photoLocation: photoData.photoLocation,
         location: photoData.location,
-        timestamp: serverTimestamp(),
+        timestamp: Date.now(),
         uid: "",
         docId: "",
         comments: [],
+        commentsCount: 0,
       });
 
       const ref = doc(db, "posts", docRef.id);
