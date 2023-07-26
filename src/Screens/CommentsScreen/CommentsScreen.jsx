@@ -29,6 +29,7 @@ export default function CommentsScreen({ route }) {
   const [photoComment, setPhotoComment] = useState("");
   const [userComments, setUserComments] = useState([]);
   const [commentsCount, setCommentsCount] = useState(0);
+  const [isBtnDisbled, setIsBtnDisabled] = useState(true);
   const userName = useSelector(selectName);
 
   useEffect(() => {
@@ -46,6 +47,10 @@ export default function CommentsScreen({ route }) {
   }, []);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    photoComment === "" ? setIsBtnDisabled(true) : setIsBtnDisabled(false);
+  }, [photoComment]);
 
   const handleAddComment = () => {
     const photoCommentObj = {
@@ -154,8 +159,12 @@ export default function CommentsScreen({ route }) {
             <Pressable
               style={styles.sendCommentIconWrapper}
               onPress={handleAddComment}
+              disabled={isBtnDisbled}
             >
-              <SendCommentButton />
+              <SendCommentButton
+                fill={isBtnDisbled ? "#E8E8E8" : "#FF6C00"}
+                // arrowFill={isBtnDisbled ? "#000" : "#FFF"}
+              />
             </Pressable>
           </View>
         </View>
