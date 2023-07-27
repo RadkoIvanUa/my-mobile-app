@@ -29,7 +29,6 @@ export default function CreatePostsScreen({ navigation }) {
   const [isBtnDisbled, setIsBtnDisabled] = useState(true);
   const [photoName, setPhotoName] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
-  const [location, setLocation] = useState(null);
   const [newPhotoUri, setNewPhotoUri] = useState("");
   const [isPostUploading, setIsPostUploading] = useState(false);
 
@@ -67,7 +66,7 @@ export default function CreatePostsScreen({ navigation }) {
       latitude: getLocation.coords.latitude,
       longitude: getLocation.coords.longitude,
     };
-    setLocation(coords);
+
     const photoNameForStorage =
       photoName.replaceAll(" ", "") + generateRandomString(10);
     const imagesRef = ref(storage, `images/${photoNameForStorage}`);
@@ -80,7 +79,7 @@ export default function CreatePostsScreen({ navigation }) {
           const newPost = {
             photoName: photoName,
             photoLocation: photoLocation,
-            location: location,
+            location: coords,
             url: url,
           };
           dispatch(writeDataToFirestore(newPost));
